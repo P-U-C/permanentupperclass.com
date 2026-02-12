@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permanent Upper Class</title>
+    <meta name="description" content="Assets. Capital. Relationships. The Permanent Upper Class builds things that compound.">
+    <meta property="og:title" content="Permanent Upper Class">
+    <meta property="og:description" content="Assets. Capital. Relationships. The coordination layer for people who build things that compound.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://permanentupperclass.com">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #060606;
+            --bg-raised: #0c0c0c;
+            --bg-surface: #111111;
+            --border: rgba(255,255,255,0.06);
+            --border-active: rgba(255,255,255,0.12);
+            --text: #d4d0c8;
+            --text-dim: #6b6760;
+            --text-faint: #3d3a36;
+            --accent: #22C55E;
+            --accent-dim: rgba(34,197,94,0.15);
+            --serif: 'Playfair Display', Georgia, serif;
+            --sans: 'DM Sans', -apple-system, sans-serif;
+            --mono: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-weight: 300;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        /* ═══ GRAIN ═══ */
+        .grain {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ═══ NAV ═══ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(6,6,6,0.8);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-mark {
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ═══ LAYOUT ═══ */
+        .page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        /* ═══ HERO ═══ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 12vh;
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-size: clamp(3.2rem, 7.5vw, 7rem);
+            font-weight: 900;
+            line-height: 0.88;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            margin-bottom: 3rem;
+        }
+
+        .hero-title span {
+            display: block;
+        }
+
+        .hero-sub {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid var(--border-active);
+            padding-top: 2rem;
+        }
+
+        .hero-tagline {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .hero-est {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            color: var(--text-faint);
+            text-transform: uppercase;
+        }
+
+        /* ═══ DIRECTIVE BLOCK ═══ */
+        .directive {
+            padding: 12vh 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .directive-header {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .directive-label {
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            padding-top: 0.35rem;
+        }
+
+        .directive-title {
+            font-family: var(--serif);
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1.2;
+            color: var(--text);
+        }
+
+        /* ═══ DIRECTIVE 01 CONTENT ═══ */
+        .d01-body {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 4rem;
+        }
+
+        .d01-body .directive-label {
+            /* label column */
+        }
+
+        .d01-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 560px;
+        }
+
+        .d01-content p {
+            font-family: var(--sans);
+            font-size: 1.05rem;
+            font-weight: 300;
+            line-height: 1.75;
+            color: var(--text);
+        }
+
+        /* ═══ PULL QUOTES ═══ */
+        .pull-quote {
+            padding: 10vh 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .pull-quote-text {
+            font-family: var(--serif);
+            font-size: clamp(2rem, 4.5vw, 3.8rem);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            max-width: 16ch;
+        }
+
+        .pull-quote-text em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .pull-quote.right {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .pull-quote.right .pull-quote-text {
+            text-align: right;
+        }
+
+        /* ═══ MANIFESTO (DIRECTIVE 02) ═══ */
+        .manifesto-body {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 4rem;
+        }
+
+        .manifesto-sidebar {
+            position: sticky;
+            top: 90px;
+            align-self: start;
+        }
+
+        .manifesto-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .manifesto-nav li a {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-faint);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: block;
+            padding: 2px 0;
+        }
+
+        .manifesto-nav li a:hover,
+        .manifesto-nav li a.active {
+            color: var(--text-dim);
+        }
+
+        .manifesto-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8vh;
+        }
+
+        .manifesto-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .manifesto-section-number {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-faint);
+        }
+
+        .manifesto-section h3 {
+            font-family: var(--serif);
+            font-size: clamp(1.4rem, 2.5vw, 2rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .manifesto-section p {
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--text);
+            max-width: 580px;
+        }
+
+        .manifesto-section p strong {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .manifesto-section p em {
+            font-style: italic;
+        }
+
+        /* ═══ INLINE HIGHLIGHT ═══ */
+        .hl {
+            color: var(--accent);
+            font-weight: 400;
+        }
+
+        /* ═══ THESIS PILLARS ═══ */
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            margin: 2rem 0;
+        }
+
+        .pillar {
+            background: var(--bg-raised);
+            border: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+        }
+
+        .pillar-label {
+            font-family: var(--serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+        }
+
+        .pillar p {
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--text-dim);
+            max-width: none;
+        }
+
+        /* ═══ POSTURE LIST ═══ */
+        .posture-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .posture-list li {
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.6;
+            color: var(--text);
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .posture-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--text-faint);
+            font-family: var(--mono);
+            font-size: 0.8rem;
+        }
+
+        /* ═══ BUILD LIST ═══ */
+        .build-item {
+            margin-bottom: 2rem;
+        }
+
+        .build-item-label {
+            font-family: var(--serif);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+
+        .build-item p {
+            font-family: var(--sans);
+            font-size: 0.9rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--text);
+            max-width: 580px;
+        }
+
+        /* ═══ CLOSING ═══ */
+        .closing {
+            padding: 12vh 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .closing-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 4rem;
+        }
+
+        .closing-line {
+            font-family: var(--sans);
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--text-dim);
+            transition: color 0.6s ease;
+        }
+
+        .closing-line:last-child {
+            font-weight: 500;
+            color: var(--text);
+            margin-top: 0.25rem;
+        }
+
+        .closing-cta {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-decoration: none;
+            padding: 12px 32px;
+            border: 1px solid var(--accent-dim);
+            transition: all 0.4s ease;
+        }
+
+        .closing-cta:hover {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+        }
+
+        /* ═══ FOOTER ═══ */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            color: var(--text-faint);
+            text-transform: uppercase;
+        }
+
+        .footer-right {
+            font-family: var(--mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            color: var(--text-faint);
+        }
+
+        /* ═══ SCROLL ANIMATIONS ═══ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* hero-specific entrance */
+        .hero-title .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: wordIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .hero-title .word:nth-child(1) { animation-delay: 0.1s; }
+        .hero-title .word:nth-child(2) { animation-delay: 0.25s; }
+        .hero-title .word:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes wordIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-sub {
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ═══ RESPONSIVE ═══ */
+        @media (max-width: 768px) {
+            nav { padding: 16px 24px; }
+            .page { padding: 0 24px; }
+
+            .directive-header,
+            .d01-body,
+            .manifesto-body {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .manifesto-sidebar {
+                position: static;
+                display: none;
+            }
+
+            .pillars {
+                grid-template-columns: 1fr;
+            }
+
+            .hero { padding-bottom: 8vh; }
+
+            .hero-sub {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .pull-quote.right {
+                justify-content: flex-start;
+            }
+
+            .pull-quote.right .pull-quote-text {
+                text-align: left;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+    <div class="nav-mark">Permanent Upper Class</div>
+    <div class="nav-status">
+        <span class="status-dot"></span>
+        <span>Directive 02 Live</span>
+    </div>
+</nav>
+
+<div class="page">
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero">
+        <h1 class="hero-title">
+            <span class="word">Permanent</span>
+            <span class="word">Upper</span>
+            <span class="word">Class</span>
+        </h1>
+        <div class="hero-sub">
+            <div class="hero-tagline">Assets. Capital. Relationships.</div>
+            <div class="hero-est">Est 2026</div>
+        </div>
+    </section>
+
+    <!-- ═══ DIRECTIVE 01 ═══ -->
+    <section class="directive" id="directive-01">
+        <div class="directive-header">
+            <div class="directive-label">Directive 01</div>
+            <div class="directive-title">The founding statement</div>
+        </div>
+        <div class="d01-body reveal">
+            <div class="directive-label"></div>
+            <div class="d01-content">
+                <p>The Permanent Upper Class controls three things: assets, capital, and relationships.</p>
+                <p>We don't debate whether AI will change everything. We use it to change everything faster. We don't subscribe to anxiety as an identity. We don't mistake cynicism for intelligence.</p>
+                <p>The doomer class watches. The upper class builds. The permanent upper class builds things that compound.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ PULL QUOTE ═══ -->
+    <section class="pull-quote right reveal">
+        <p class="pull-quote-text">"Anxiety is <em>not</em> a strategy."</p>
+    </section>
+
+    <!-- ═══ DIRECTIVE 02: MANIFESTO ═══ -->
+    <section class="directive" id="directive-02">
+        <div class="directive-header reveal">
+            <div class="directive-label">Directive 02</div>
+            <div class="directive-title">A founding document</div>
+        </div>
+
+        <div class="manifesto-body">
+            <div class="manifesto-sidebar">
+                <ul class="manifesto-nav">
+                    <li><a href="#obs">I. The Observation</a></li>
+                    <li><a href="#thesis">II. The Thesis</a></li>
+                    <li><a href="#arch">III. The Architecture</a></li>
+                    <li><a href="#identity">IV. The Identity</a></li>
+                    <li><a href="#invite">V. The Invitation</a></li>
+                </ul>
+            </div>
+
+            <div class="manifesto-content">
+
+                <!-- I. THE OBSERVATION -->
+                <div class="manifesto-section reveal" id="obs">
+                    <div class="manifesto-section-number">Section I</div>
+                    <h3>The Observation</h3>
+                    <p>There is a class of people who will never own anything that compounds.</p>
+                    <p>Not because they lack intelligence. Not because they lack effort. Because the systems they participate in are designed to extract from them. Subscription models extract rent from their attention. Inflation extracts value from their savings. Platforms extract signal from their behavior and sell it back to them as content.</p>
+                    <p>The game is not rigged in the way conspiracists imagine — there is no smoke-filled room. It's worse than that. The game is <em>thermodynamic</em>. Value flows uphill unless you build a structure that reverses the gradient.</p>
+                    <p>This is the permanent underclass. Not a demographic. A condition. A relationship to compounding that is always negative.</p>
+                    <p>We reject this as an inevitability.</p>
+                </div>
+
+
+
+                <!-- III. THE THESIS -->
+                <div class="manifesto-section reveal" id="thesis">
+                    <div class="manifesto-section-number">Section II</div>
+                    <h3>The Thesis</h3>
+                    <p>The Permanent Upper Class controls three things:</p>
+
+                    <div class="pillars">
+                        <div class="pillar">
+                            <div class="pillar-label">Assets</div>
+                            <p>Things that appreciate or generate yield without your active labor.</p>
+                        </div>
+                        <div class="pillar">
+                            <div class="pillar-label">Capital</div>
+                            <p>The ability to deploy resources at the moment of maximum asymmetry.</p>
+                        </div>
+                        <div class="pillar">
+                            <div class="pillar-label">Relationships</div>
+                            <p>Access to people who are building the future, not merely commenting on it.</p>
+                        </div>
+                    </div>
+
+                    <p>These three form a flywheel. Assets generate capital. Capital opens relationships. Relationships surface asymmetric opportunities to acquire more assets. This is not new. Every durable fortune in history runs on this loop. What is new is that <strong>AI makes the loop executable by individuals and small collectives</strong> at a scale that previously required institutions.</p>
+                    <p>The hedge fund's edge was always information processing speed and breadth. AI democratizes that. The venture capitalist's edge was always deal flow through relationships. Networked collectives surface that. The family office's edge was always patience — the ability to hold through volatility because the time horizon is generational. On-chain structures with programmatic governance can encode that patience into smart contracts.</p>
+                    <p>The permanent upper class is not a wealth bracket. It is a <em>systems posture</em>. You are in it when:</p>
+
+                    <ul class="posture-list">
+                        <li>Your assets compound whether you are paying attention or not.</li>
+                        <li>Your information pipeline learns from its own mistakes.</li>
+                        <li>Your network creates value that feeds back to you without extraction.</li>
+                        <li>Your time horizon is longer than any single market cycle.</li>
+                    </ul>
+                </div>
+
+                <!-- IV. THE ARCHITECTURE -->
+                <div class="manifesto-section reveal" id="arch">
+                    <div class="manifesto-section-number">Section III</div>
+                    <h3>The Architecture</h3>
+                    <p>We don't debate whether AI will change everything. We use it to change everything faster. This means building:</p>
+
+                    <div class="build-item">
+                        <div class="build-item-label">Compound learning systems</div>
+                        <p>Not bots that trade. Pipelines that observe, synthesize, decide, execute, and then feed the outcome back into the observation layer so the next cycle is smarter. Every trade is a data point. Every mistake is a grimoire entry. Every thesis is tested against reality and updated. The system gets better because it remembers.</p>
+                    </div>
+
+                    <div class="build-item">
+                        <div class="build-item-label">Sovereign intelligence</div>
+                        <p>Your AI should work for you, not for the platform that hosts it. It should know your risk tolerance, your thesis, your edge. It should get smarter the longer you use it. It should be portable — not trapped in someone else's context window.</p>
+                    </div>
+
+                    <div class="build-item">
+                        <div class="build-item-label">Collective coordination without collective control</div>
+                        <p>Each member operates independently. Their own systems, their own capital, their own decisions. But the collective benefits from shared signal: aggregated conviction scores, anonymized trade outcomes, pattern libraries, thesis registries. A hive mind that augments individual judgment without replacing it.</p>
+                    </div>
+
+                    <div class="build-item">
+                        <div class="build-item-label">On-chain primitives for trust</div>
+                        <p>Membership as an NFT. Reputation as a score derived from verifiable outcomes. Governance as weighted conviction, not one-token-one-vote plutocracy. Treasury as a programmatic entity that compounds collective capital according to rules the collective sets and can change.</p>
+                    </div>
+                </div>
+
+                <!-- V. THE IDENTITY -->
+                <div class="manifesto-section reveal" id="identity">
+                    <div class="manifesto-section-number">Section IV</div>
+                    <h3>The Identity</h3>
+                    <p>We don't subscribe to anxiety as an identity. We don't mistake cynicism for intelligence.</p>
+                    <p>The doomer class watches the world deteriorate and narrates its own helplessness. They are right about the problems and wrong about their agency. The permanent underclass is a mindset before it is an economic condition. It is the belief that the system is too large, too captured, too entrenched to be changed by individuals.</p>
+                    <p>The permanent upper class is also a mindset. It is the belief that:</p>
+
+                    <ul class="posture-list">
+                        <li>Compounding is the most powerful force available to individuals.</li>
+                        <li>AI is leverage, not threat.</li>
+                        <li>Small groups with shared intelligence and aligned incentives can outperform large institutions with misaligned ones.</li>
+                        <li>The best time to build asymmetric advantage is when everyone else is frozen by uncertainty.</li>
+                        <li>Anxiety is not a strategy.</li>
+                    </ul>
+
+                    <p>We are not optimists. Optimism is a prediction. We are builders. Building is a practice.</p>
+                </div>
+
+                <!-- VI. THE INVITATION -->
+                <div class="manifesto-section reveal" id="invite">
+                    <div class="manifesto-section-number">Section V</div>
+                    <h3>The Invitation</h3>
+                    <p>This is not a club. It is not a DAO with a governance token and a Discord. It is a coordination layer for people who are already building.</p>
+                    <p>If you are building a system that compounds — whether that's a trading intelligence, a business, a network, a body of knowledge, or a portfolio — you are already practicing what we preach. The question is whether you want to compound alone or in parallel with others who share the same design principles.</p>
+                    <p>The permanent upper class is open to anyone willing to do the work. There is no entry fee except proof of building. No gatekeeping except the filter of ambition over complaint. No hierarchy except the natural ranking of compounded outcomes over time.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ PULL QUOTE ═══ -->
+    <section class="pull-quote reveal">
+        <p class="pull-quote-text">"The permanent underclass is a mindset. <em>So is this.</em>"</p>
+    </section>
+
+    <!-- ═══ CLOSING ═══ -->
+    <section class="closing reveal">
+        <div class="closing-lines">
+            <div class="closing-line">The doomer class watches.</div>
+            <div class="closing-line">The upper class builds.</div>
+            <div class="closing-line">The permanent upper class builds things that compound.</div>
+        </div>
+        <a href="/manifesto.md" class="closing-cta">Read the full manifesto ↗</a>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+        <div class="footer-left">permanentupperclass.com</div>
+        <div class="footer-right">Directive 01–02 Live</div>
+    </footer>
+
+</div>
+
+<script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Active sidebar nav
+    const sections = document.querySelectorAll('.manifesto-section');
+    const navLinks = document.querySelectorAll('.manifesto-nav a');
+
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                const id = entry.target.id;
+                const activeLink = document.querySelector(`.manifesto-nav a[href="#${id}"]`);
+                if (activeLink) activeLink.classList.add('active');
+            }
+        });
+    }, {
+        threshold: 0.3,
+        rootMargin: '-100px 0px -50% 0px'
+    });
+
+    sections.forEach(section => navObserver.observe(section));
+</script>
+
+</body>
+</html>
