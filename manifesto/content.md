@@ -116,8 +116,6 @@ The permanent upper class builds things that compound.
 
 **Directive 01 is live.**
 
-permanentupperclass.com
-
 ---
 
 *This document is a living artifact. It will be updated as the system learns. That's the point.*
