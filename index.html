@@ -121,7 +121,7 @@
 
         /* ═══ HERO ═══ */
         .hero {
-            min-height: 92vh;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -882,4 +882,17 @@
             if (entry.isIntersecting) {
                 navLinks.forEach(link => link.classList.remove('active'));
                 const id = entry.target.id;
-                const activeLink = document.querySelector(`.manifesto-nav a[href="#${i
+                const activeLink = document.querySelector(`.manifesto-nav a[href="#${id}"]`);
+                if (activeLink) activeLink.classList.add('active');
+            }
+        });
+    }, {
+        threshold: 0.3,
+        rootMargin: '-100px 0px -50% 0px'
+    });
+
+    sections.forEach(section => navObserver.observe(section));
+</script>
+
+</body>
+</html>
