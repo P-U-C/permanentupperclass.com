@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PUC — Orientation</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+:root {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --border: #1a1a1a;
+  --border-hover: #2a2a2a;
+  --text-primary: #f5f5f5;
+  --text-secondary: #b0b0b0;
+  --text-muted: #666666;
+  --accent: #c8ff00;
+  --accent-dim: rgba(200, 255, 0, 0.08);
+  --accent-glow: rgba(200, 255, 0, 0.03);
+  --red: #ff3333;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'JetBrains Mono', monospace; min-height: 100vh; line-height: 1.6; }
+body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); }
+.container { max-width: 720px; margin: 0 auto; padding: 80px 24px 120px; }
+.header { margin-bottom: 80px; opacity: 0; animation: fadeIn 1s ease forwards; }
+.header-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+.header-label span { color: var(--accent); opacity: 0.6; }
+.divider { height: 1px; background: var(--border); margin: 40px 0; }
+.directive { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.8; max-width: 520px; opacity: 0; animation: fadeIn 1s ease 0.3s forwards; }
+.directive em { color: var(--text-primary); font-style: normal; }
+.series-section { opacity: 0; animation: fadeIn 1s ease 0.6s forwards; }
+.series-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+.series-title { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); opacity: 0.7; }
+.series-count { font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.1em; }
+.series-subtitle { font-size: 0.95rem; font-weight: 300; color: var(--text-primary); margin-bottom: 6px; letter-spacing: -0.01em; }
+.series-source { font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 32px; }
+.series-source a { color: var(--text-muted); text-decoration: none; border-bottom: 1px solid var(--border); transition: all 0.3s ease; }
+.series-source a:hover { color: var(--text-secondary); border-color: var(--text-secondary); }
+.entry-list { list-style: none; }
+.entry { border-top: 1px solid var(--border); transition: background 0.3s ease; }
+.entry:last-child { border-bottom: 1px solid var(--border); }
+.entry-header { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; cursor: pointer; user-select: none; transition: all 0.2s ease; }
+.entry-header:hover { padding-left: 8px; }
+.entry-header:hover .entry-number { color: var(--accent); opacity: 0.8; }
+.entry-number { font-size: 0.6rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.1em; min-width: 28px; padding-top: 2px; transition: color 0.3s ease; font-variant-numeric: tabular-nums; }
+.entry-info { flex: 1; min-width: 0; }
+.entry-name { font-size: 0.78rem; font-weight: 400; color: var(--text-secondary); transition: color 0.3s ease; line-height: 1.5; }
+.entry-header:hover .entry-name { color: var(--text-primary); }
+.entry-date { font-size: 0.55rem; color: var(--text-muted); letter-spacing: 0.08em; margin-top: 4px; }
+.entry-toggle { font-size: 0.65rem; color: var(--text-muted); transition: all 0.3s ease; padding-top: 3px; min-width: 16px; text-align: right; }
+.entry.open .entry-toggle { color: var(--accent); opacity: 0.5; }
+.entry-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease; opacity: 0; }
+.entry.open .entry-body { max-height: 300px; opacity: 1; }
+.entry-content { padding: 0 0 20px 44px; }
+.entry-desc { font-size: 0.68rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; font-weight: 300; }
+.entry-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.6rem; color: var(--accent); opacity: 0.6; text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: opacity 0.3s ease; }
+.entry-link:hover { opacity: 1; }
+.entry-link::after { content: '→'; transition: transform 0.2s ease; }
+.entry-link:hover::after { transform: translateX(3px); }
+.status { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border); opacity: 0; animation: fadeIn 1s ease 0.9s forwards; }
+.status-line { font-size: 0.55rem; color: var(--text-muted); letter-spacing: 0.1em; display: flex; align-items: center; gap: 8px; }
+.status-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); opacity: 0.4; animation: pulse 3s ease-in-out infinite; }
+.footer-nav { margin-top: 24px; font-size: 0.6rem; }
+.footer-nav a { color: var(--text-muted); text-decoration: none; letter-spacing: 0.08em; border-bottom: 1px solid transparent; transition: all 0.3s ease; }
+.footer-nav a:hover { color: var(--text-secondary); border-color: var(--border-hover); }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+@media (max-width: 600px) {
+  .container { padding: 48px 20px 80px; }
+  .header { margin-bottom: 56px; }
+  .entry-header { gap: 12px; }
+  .entry-content { padding-left: 40px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="header-label"><span>PUC</span> / orientation</div>
+    <div class="divider"></div>
+    <p class="directive">
+      Situational awareness. Required processing.<br><br>
+      The landscape is shifting. <em>Work, identity, purpose</em> — the foundations are being rewritten in real time. What follows is the briefing. 14 parts. One throughline.<br><br>
+      Process it or don't. But don't say you weren't given the signal.
+    </p>
+  </header>
+  <section class="series-section">
+    <div class="series-header">
+      <span class="series-title">Signal</span>
+      <span class="series-count">14 transmissions</span>
+    </div>
+    <div class="series-subtitle">You Have 5000 Days: Navigating the End of Work as We Know It</div>
+    <div class="series-source">via <a href="https://readmultiplex.com" target="_blank" rel="noopener">readmultiplex.com</a></div>
+    <ul class="entry-list">
+
+      <li class="entry" data-index="0">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">01</span>
+          <div class="entry-info">
+            <div class="entry-name">The Call to Adventure</div>
+            <div class="entry-date">2025.12.24</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">The ordinary world dissolves. AI timelines, the hero's journey framework, and the 5000-day thesis. Where it starts.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2025/12/24/you-have-5000-days-how-to-navigate-the-end-of-work-as-we-know-it-part-1/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="1">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">02</span>
+          <div class="entry-info">
+            <div class="entry-name">Charting the Unknown</div>
+            <div class="entry-date">2025.12.31</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">Grief frameworks for career eclipse. Kübler-Ross adapted for the age of automation. Preemptive strategy.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2025/12/31/you-have-5000-days-how-to-navigate-the-end-of-work-as-we-know-it-part-2/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="2">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">03</span>
+          <div class="entry-info">
+            <div class="entry-name">The Player Piano</div>
+            <div class="entry-date">2026.01.01</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">Vonnegut's prophetic lens on mechanized society. Crossing the threshold. Proactive adaptation over reactive trauma.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/01/01/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-3-the-player-piano/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="3">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">04</span>
+          <div class="entry-info">
+            <div class="entry-name">Reframing the Dawn of Abundance</div>
+            <div class="entry-date">2026.01.19</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">Mental reframing over fear. Scott Adams-inspired frameworks for converting obsolescence anxiety into asymmetric opportunity.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/01/19/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-4-reframing-the-dawn-of-abundance/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="4">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">05</span>
+          <div class="entry-info">
+            <div class="entry-name">Your Deskilling</div>
+            <div class="entry-date">2026.01.20</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">Anthropic's Economic Index applied. AI-driven deskilling reframed as liberation. Flow state as the cognitive reskilling path.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/01/20/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-5-your-deskilling/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="5">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">06</span>
+          <div class="entry-info">
+            <div class="entry-name">The Dark Night of the Soul</div>
+            <div class="entry-date">2026.01.27</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">The inmost cave. Psychological crisis as the hero's ordeal. The Zero-Human Company as metaphor. Frankl and Camus as guides.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/01/27/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-6-the-dark-night-of-the-soul/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="6">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">07</span>
+          <div class="entry-info">
+            <div class="entry-name">Consider Phlebas</div>
+            <div class="entry-date">2026.01.30</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">Iain M. Banks' Culture as blueprint. Post-scarcity societies. Human fragility and purpose when labor is optional.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/01/30/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-7-consider-phlebas/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="7">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">08</span>
+          <div class="entry-info">
+            <div class="entry-name">Saving Your Wisdom</div>
+            <div class="entry-date">2026.02.02</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">Knowledge preservation before the transition erases it. SaveWisdom.org as tool. Narrative therapy as the elixir of return.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/02/02/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-8-saving-your-wisdom/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="8">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">09</span>
+          <div class="entry-info">
+            <div class="entry-name">The Artisan's Awakening</div>
+            <div class="entry-date">2026.02.04</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">Moravec's Paradox and the rebirth of craft. Twenty-two resilient trades. The human hand as competitive advantage.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/02/04/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-9-the-artisans-awakening/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="9">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">10</span>
+          <div class="entry-info">
+            <div class="entry-name">Everyone Is Doing It*</div>
+            <div class="entry-date">2026.02.08</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">The Alt-Tab reflex. Mass AI adoption conducted in secret. Cultural lag versus the reality of the tool already in everyone's hands.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/02/08/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-10-everyone-is-doing-it/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="10">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">11</span>
+          <div class="entry-info">
+            <div class="entry-name">The Reversal of Obsolescence</div>
+            <div class="entry-date">2026.02.14</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">McLuhan's tetrad applied. Enhance, obsolesce, retrieve, reverse. How AI's four laws flip the obsolescence narrative.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/02/14/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-11-the-reversal-of-obsolescence/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="11">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">12</span>
+          <div class="entry-info">
+            <div class="entry-name">The Profit and the Architect</div>
+            <div class="entry-date">2026.02.17</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">Architecting new economic models for the abundance era. New profit structures when scarcity-driven labor fades.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/02/17/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-12-the-profit-and-the-arcitect/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="12">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">13</span>
+          <div class="entry-info">
+            <div class="entry-name">The Guilded Age</div>
+            <div class="entry-date">2026.02.20</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">Medieval guilds as models for decentralized modern communities. Collective coordination without collective control.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/02/20/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-13-the-guilded-age/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="entry" data-index="13">
+        <div class="entry-header" onclick="toggleEntry(this)">
+          <span class="entry-number">14</span>
+          <div class="entry-info">
+            <div class="entry-name">The Interregnum Chaos, and the Hero's Path Forward</div>
+            <div class="entry-date">2026.02.22</div>
+          </div>
+          <span class="entry-toggle">+</span>
+        </div>
+        <div class="entry-body">
+          <div class="entry-content">
+            <p class="entry-desc">The AI prediction model. 28 scenarios. Monte Carlo injections on a live simulation. The path forward from the chaos of transition.</p>
+            <a class="entry-link" href="https://readmultiplex.com/2026/02/22/you-have-5000-days-navigating-the-end-of-work-as-we-know-it-part-14-the-interregnum-chaos-and-the-heros-path-forward/" target="_blank" rel="noopener">Access</a>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </section>
+
+  <div class="status">
+    <div class="status-line">
+      <span class="status-dot"></span>
+      <span>series ongoing — 14 transmissions logged</span>
+    </div>
+  </div>
+
+  <div class="footer-nav">
+    <a href="/">permanentupperclass.com</a>
+  </div>
+</div>
+
+<script>
+function toggleEntry(header) {
+  const entry = header.closest(".entry");
+  const toggle = header.querySelector(".entry-toggle");
+  const isOpen = entry.classList.contains("open");
+  document.querySelectorAll(".entry.open").forEach(e => {
+    e.classList.remove("open");
+    e.querySelector(".entry-toggle").textContent = "+";
+  });
+  if (!isOpen) {
+    entry.classList.add("open");
+    toggle.textContent = "−";
+  }
+}
+</script>
+</body>
+</html>
