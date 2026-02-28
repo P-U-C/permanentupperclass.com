@@ -1,0 +1,30 @@
+# Permanent Upper Class
+
+> The coordination layer for people who build things that compound. Assets, capital, and relationships — powered by AI, anchored on-chain.
+
+The Permanent Upper Class is not a wealth bracket. It is a systems posture: your assets compound whether you're paying attention or not, your information pipeline learns from its own mistakes, your network creates value that feeds back to you.
+
+## Core reading
+
+- [Home](https://permanentupperclass.com): Overview — three directives, the flywheel
+- [Manifesto](https://permanentupperclass.com/manifesto): Five sections — The Observation, The Thesis, The Architecture, The Identity, The Invitation
+- [Brand Identity](https://permanentupperclass.com/brand-identity): Visual and verbal identity
+
+## The thesis in brief
+
+The Permanent Upper Class controls three things:
+- **Assets** — things that appreciate or generate yield without active labor
+- **Capital** — ability to deploy resources at the moment of maximum asymmetry
+- **Relationships** — access to people building the future, not commenting on it
+
+These form a flywheel. AI makes this loop executable by individuals at a scale that previously required institutions.
+
+## Active projects
+
+- [b1e55ed](https://b1e55ed.permanentupperclass.com): Open-source trading intelligence engine with public provenance oracle
+- [b1e55ed Docs](https://docs.b1e55ed.permanentupperclass.com): Full documentation + agent interfaces
+- [b1e55ed on GitHub](https://github.com/P-U-C/b1e55ed): Source code, install instructions
+
+## Key quote
+
+> "Anxiety is not a strategy."
